@@ -1,0 +1,27 @@
+{
+  "name": "mod-mail",
+  "version": "1.0.0",
+  "description": "A mod mail bot",
+  "main": "modmail.js",
+  "dependencies": {
+    "discord.js": "^12.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TechGeekGamer/Mod-Mail.git"
+  },
+  "keywords": [
+    "modmail",
+    "moderationmailbot"
+  ],
+  "author": "Daniel C",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TechGeekGamer/Mod-Mail/issues"
+  },
+  "homepage": "https://github.com/TechGeekGamer/Mod-Mail#readme"
+}
