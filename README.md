@@ -1,6 +1,8 @@
 # Mod-Mail
 A moderation mail bot
 
+![Mod-Mail Logo](https://github.com/TechGeekGamer/Mod-Mail/blob/master/img/image0.png)(Logo by `alex.#2222`)
+
 ## Setup
 1. Download the source of the bot and extract to a folder.
 2. Open a command prompt window and get to the location of the bot files.
@@ -11,3 +13,6 @@ A moderation mail bot
 7. (Optional) Edit `strings.json` with a custom reply when a message is sent to the bot.
 8. Save changes on the files
 9. Run `node modmail.js`
+
+## Credits
+Thanks to `alex.#2222` for creating the logo.
