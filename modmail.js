@@ -2,37 +2,13 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const { nopermreply, BootSuccessful} = require('./strings.json');
-const {BotLog} = require('./info.json');
+const {BotLog, MessageLog} = require('./info.json');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
-const ytdl = require('ytdl-core');
 const { MessageEmbed } = require('discord.js')
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-}
-
-client.on('message', message => {
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-	const args = message.content.slice(prefix.length).split(/ +/);
-	const commandName = args.shift().toLowerCase();
-	const command = client.commands.get(commandName)
-		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-	if (!command) return;
-	try {
-		command.execute(message, args);
-	} catch (error) {
-		console.error(error);
-		message.reply('there was an error trying to execute that command!');
-	}
-
-	
-});
-
+//Bootup check
 client.once('ready', () => {
 	console.log('Ready!');
 	
@@ -53,7 +29,6 @@ client.once('ready', () => {
 				{ name: 'Current date/time: ', value: dateTime, inline: true },
 			)
 			.setTimestamp()
-			.setFooter('Bot written by Daniel C');
 			global.modlog = client.channels.cache.get(`${BotLog}`);
 			modlog.send(StartupEmbed);
 			return
@@ -70,7 +45,6 @@ client.once('ready', () => {
 					{ name: 'Current date/time: ', value: dateTime, inline: true },
 				)
 				.setTimestamp()
-				.setFooter('Bot written by Daniel C');
 				global.modlog = client.channels.cache.get(`${BotLog}`);
 				modlog.send(StartupEmbed);
 				fs.writeFileSync('./runstate.txt', 'running')
@@ -92,9 +66,23 @@ client.on('message', message => {
 	if (message.author.bot) return;
 	if (message.channel.type == "dm") {
 		if (message.content.startsWith(prefix)) return;
+		var today = new Date();
+			var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
+			var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+			global.dateTime = date+' '+time;
 		const messagecontent = message.content
-		const channel = client.channels.cache.get(``);
-		channel.send(messagecontent);
+		const channel = client.channels.cache.get(MessageLog);
+		const MessageReceivedEmbed = new Discord.MessageEmbed()
+			.setTitle('Message Received')
+			.setDescription(`A message was received via direct messages.`)
+			.addFields(
+				{ name: 'Current date/time ', value: dateTime, inline: false },
+				{ name: 'Sender', value: message.author.tag, inline: false },
+				{ name: 'Sender ID', value: message.author.id, inline: false },
+				{ name: 'Message ', value: messagecontent, inline: false },
+			)
+			.setTimestamp()
+		channel.send(MessageReceivedEmbed);
 
 	}
 
