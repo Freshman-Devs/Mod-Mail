@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
-const { nopermreply, BootSuccessful} = require('./strings.json');
+const { nopermreply, BootSuccessful, DmRespondMessage} = require('./strings.json');
 const {BotLog, MessageLog} = require('./info.json');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -83,6 +83,7 @@ client.on('message', message => {
 			)
 			.setTimestamp()
 		channel.send(MessageReceivedEmbed);
+		message.channel.send('Message was sent to the "'+ channel.guild.name+ '" server. '+DmRespondMessage)
 
 	}
 
