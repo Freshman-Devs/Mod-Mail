@@ -95,7 +95,6 @@ client.on('message', message => {
 })
 
 client.on('message', message => {
-	return;
 if (message.channel.type == 'dm')return;
 if (message.content.startsWith == prefix+'dm')try{
 const args = message.content.slice(prefix.length).split(/ +/);
