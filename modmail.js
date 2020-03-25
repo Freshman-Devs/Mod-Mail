@@ -23,6 +23,7 @@ client.once('ready', () => {
 					{ name: 'Current date/time: ', value: dateTime, inline: true },
 				)
 				.setTimestamp()
+				.setFooter('Mod Mail')
 				global.modlog = client.channels.cache.get(`${BotLog}`);
 				modlog.send(StartupEmbed);
 				return;
@@ -42,29 +43,75 @@ client.on('error', error => {
 client.on('message', message => {
 	if (message.author.bot) return;
 	if (message.channel.type == "dm") {
-		if (message.content.startsWith(prefix)) return;
+	if (message.content.startsWith(prefix)) return;
 		var today = new Date();
-			var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
-			var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-			global.dateTime = date+' '+time;
-		const messagecontent = message.content
+		var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
+		var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+		const messagecontent = message.content;
 		const channel = client.channels.cache.get(MessageLog);
-		const MessageReceivedEmbed = new Discord.MessageEmbed()
-			.setTitle('Message Received')
-			.setDescription(`A message was received via direct messages.`)
+		global.dateTime = date+' '+time;
+		if (message.content == ''){
+				message.channel.send('Error: Message content can\'t be empty.');
+				message.channel.send('<@'+message.author.id+'>, you must include some text in your message to send it.');
+				return
+			}
+		if(message.content.length > '1024'){
+				message.channel.send('Error: MessageEmbed field can\'t exceed 1024 characters.');
+				message.channel.send('<@'+message.author.id+'>, your message can\'t exceed 1024 characters. Please shorten your message.');
+				return
+			}
+		const MessageSentEmbed = new Discord.MessageEmbed()
+			.setColor('008000')
+			.setTitle('Message Sent')
+			.setDescription('Your message was sent to the "'+ channel.guild.name+ '" server. '+DmRespondMessage)
 			.addFields(
-				{ name: 'Current date/time ', value: dateTime, inline: false },
-				{ name: 'Sender', value: message.author.tag, inline: false },
-				{ name: 'Sender ID', value: message.author.id, inline: false },
-				{ name: 'Message ', value: messagecontent, inline: false },
-			)
-			.setTimestamp()
-		channel.send(MessageReceivedEmbed);
-		message.channel.send('Message was sent to the "'+ channel.guild.name+ '" server. '+DmRespondMessage)
+				{ name: 'Current date/time ',
+				value: dateTime,
+				inline: false },
+				{ name: 'Message ',
+				value: messagecontent,inline: false },
+				)
+				.setTimestamp()
+				.setFooter('Mod Mail')
+			message.channel.send(MessageSentEmbed);
+				 
+			const MessageReceivedEmbed = new Discord.MessageEmbed()
+				.setTitle('Message Received')
+				.setDescription(`A message was received via direct messages.`)
+				.addFields(
+					{ name: 'Current date/time ', value: dateTime, inline: false },
+					{ name: 'Sender', value: message.author.tag, inline: false },
+					{ name: 'Sender ID', value: message.author.id, inline: false },
+					{ name: 'Message ', value: messagecontent, inline: false },
+				)
+				.setTimestamp()
+				channel.send(MessageReceivedEmbed);
 
+			if (message.attachments.size != '0'){
+				channel.send("Attachments were found.", { files: [`${message.attachments.first().url}`] });
+			}
 	}
 
 })
 
+client.on('message', message => {
+	return;
+if (message.channel.type == 'dm')return;
+if (message.content.startsWith == prefix+'dm')try{
+const args = message.content.slice(prefix.length).split(/ +/);
+args.join(' ')
+const reply = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg));
+const ReplyReceived = new Discord.MessageEmbed()
+				.setTitle('Reply Received')
+				.setDescription(`You have received a reply.`)
+				.addFields(
+					{ name: 'Message ', 
+					value: reply, 
+					inline: false },
+				)
+				.setTimestamp()
+				message.mentions.members.first.send(MessageReceivedEmbed);
+				}catch(err){console.error('Error', err)}
+})
 //Login
 client.login(token);;
