@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
+const { DMcommand, token } = require('./config.json');
 const { nopermreply, BootSuccessful, DmRespondMessage} = require('./strings.json');
 const {BotLog, MessageLog} = require('./info.json');
 const client = new Discord.Client();
@@ -95,12 +95,19 @@ client.on('message', message => {
 })
 
 client.on('message', message => {
-if (message.channel.type == 'dm')return;
-if (message.content.startsWith == prefix+'dm')try{
-const args = message.content.slice(prefix.length).split(/ +/);
-args.join(' ')
-const reply = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg));
-const ReplyReceived = new Discord.MessageEmbed()
+	if (message.content.startsWith(`${DMcommand}`)){
+	if (message.author.bot)return;
+	if (message.channel.type == 'dm')return;
+	console.log('Not DMs')
+	try{
+	console.log('Command detected')
+	const args = message.content.slice(prefix.length).split(/ +/);
+	console.log(args)
+	args.join(' ')
+	const mentionedmemnber = message.mentions.members.first()
+		const newargs = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg));
+		const reply = newargs.join (' ')
+		const ReplyReceived = new Discord.MessageEmbed()
 				.setTitle('Reply Received')
 				.setDescription(`You have received a reply.`)
 				.addFields(
@@ -109,8 +116,8 @@ const ReplyReceived = new Discord.MessageEmbed()
 					inline: false },
 				)
 				.setTimestamp()
-				message.mentions.members.first.send(MessageReceivedEmbed);
-				}catch(err){console.error('Error', err)}
-})
+				mentionedmemnber.send(ReplyReceived);
+				console.log('Attempted to send.')}catch(err){console.log(err)}
+}})
 //Login
 client.login(token);;
