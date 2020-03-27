@@ -116,8 +116,11 @@ client.on('message', message => {
 					inline: false },
 				)
 				.setTimestamp()
-				mentionedmemnber.send(ReplyReceived);
-				console.log('Attempted to send.')}catch(err){console.log(err)}
+				try{
+					mentionedmemnber.send(ReplyReceived);
+					console.log('Attempted to send.')}catch(err){console.log(err)}
+					message.channel.send('Direct message reply was sent to `'+mentionedmemnber.user.tag+'`.')
+				}catch(err){message.channel.send('Something went wrong and I was unable to direct message `'+mentionedmemnber.user.tag+'`. Please try again.');return;}
 }})
 //Login
 client.login(token);;
