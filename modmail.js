@@ -2,7 +2,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const { DMcommand, token } = require('./config.json');
 const { nopermreply, BootSuccessful, DmRespondMessage} = require('./strings.json');
-const {BotLog, MessageLog} = require('./info.json');
+const {BotLog, MessageLog, RequirePermissonsToUseDmCommand, StaffRoleID} = require('./info.json');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const { MessageEmbed } = require('discord.js')
@@ -98,6 +98,11 @@ client.on('message', message => {
 	if (message.content.startsWith(`${DMcommand}`)){
 	if (message.author.bot)return;
 	if (message.channel.type == 'dm')return;
+	if(RequirePermissonsToUseDmCommand == true){
+		if (message.member.roles.cache.some(role => role.id === `${StaffRoleID}`)){
+			
+		}else{message.reply(nopermreply);return;}
+	}
 	console.log('Not DMs')
 	try{
 	console.log('Command detected')
