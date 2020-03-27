@@ -43,7 +43,7 @@ client.on('error', error => {
 client.on('message', message => {
 	if (message.author.bot) return;
 	if (message.channel.type == "dm") {
-	if (message.content.startsWith(prefix)) return;
+	if (message.content.startsWith(DMcommand)) return;
 		var today = new Date();
 		var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
 		var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -101,7 +101,7 @@ client.on('message', message => {
 	console.log('Not DMs')
 	try{
 	console.log('Command detected')
-	const args = message.content.slice(prefix.length).split(/ +/);
+	const args = message.content.slice(DMcommand.length).split(/ +/);
 	console.log(args)
 	args.join(' ')
 	const mentionedmemnber = message.mentions.members.first()
