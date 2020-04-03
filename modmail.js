@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { DMcommand, token } = require('./config.json');
+const { DMcommand, token, EnableIncomingMailCommand, DisableIncomingMailCommand} = require('./config.json');
 const { nopermreply, BootSuccessful, DmRespondMessage} = require('./strings.json');
 const {BotLog, MessageLog, RequirePermissonsToUseDmCommand, StaffRoleID} = require('./info.json');
 const client = new Discord.Client();
@@ -11,6 +11,10 @@ const { MessageEmbed } = require('discord.js')
 //Bootup check
 client.once('ready', () => {
 	console.log('Ready!');
+	fs.readFile('./allow-incoming.config', function(err, data){
+		console.log(err)
+		if (data == 'reject'){client.user.setStatus("dnd");const status = 'Mod Mail | Incoming disabled'}else{const status = 'Mod Mail | Incoming enabled'}
+	})
 		  var today = new Date();
 				var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
 				var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -44,11 +48,27 @@ client.on('message', message => {
 	if (message.author.bot) return;
 	if (message.channel.type == "dm") {
 	if (message.content.startsWith(DMcommand)) return;
+	const messagecontent = message.content;
+	const channel = client.channels.cache.get(MessageLog);
+	fs.readFile('./allow-incoming.config', function(err, data){
+		console.log(err)
+	
+		if (data == 'reject'){
+			const MessageIncomingRejected = new Discord.MessageEmbed()
+			.setColor('ff0000')
+			.setTitle('Message Rejected')
+			.setDescription('Sorry, "'+ channel.guild.name+ '" is currently not accepting Mod Mail at the moment. Please try again later.')
+			.addFields(
+				{ name: 'Message ',
+				value: message.content,
+				inline: false },
+				)
+				.setTimestamp()
+				.setFooter('Mod Mail')
+			message.channel.send(MessageIncomingRejected);return;}
 		var today = new Date();
 		var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
 		var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-		const messagecontent = message.content;
-		const channel = client.channels.cache.get(MessageLog);
 		global.dateTime = date+' '+time;
 		if (message.content == ''){
 				message.channel.send('Error: Message content can\'t be empty.');
@@ -89,11 +109,12 @@ client.on('message', message => {
 
 			if (message.attachments.size != '0'){
 				channel.send("Attachments were found.", { files: [`${message.attachments.first().url}`] });
-			}
+			}})
 	}
 
 })
 
+//Reply
 client.on('message', message => {
 	if (message.content.startsWith(`${DMcommand}`)){
 	if (message.author.bot)return;
@@ -127,5 +148,38 @@ client.on('message', message => {
 					message.channel.send('Direct message reply was sent to `'+mentionedmemnber.user.tag+'`.')
 				}catch(err){message.channel.send('Something went wrong and I was unable to direct message `'+mentionedmemnber.user.tag+'`. Please try again.');return;}
 }})
+
+//Disable Incoming
+client.on('message', message => {
+	if (message.content.startsWith(`${DisableIncomingMailCommand}`)){
+		if (message.author.bot)return;
+		if (message.channel.type == 'dm')return;
+		if(RequirePermissonsToUseDmCommand == true){
+		if (message.member.roles.cache.some(role => role.id === `${StaffRoleID}`)){
+
+		}else{message.reply(nopermreply);return;}
+	}
+		fs.writeFileSync('./allow-incoming.config', 'reject')
+		client.user.setStatus("dnd");
+		message.channel.send('Mod Mail is now disabled.')
+		
+	}})
+
+//Allow Incoming
+	client.on('message', message => {
+	if (message.content.startsWith(`${EnableIncomingMailCommand}`)){
+		if (message.author.bot)return;
+		if (message.channel.type == 'dm')return;
+		if(RequirePermissonsToUseDmCommand == true){
+		if (message.member.roles.cache.some(role => role.id === `${StaffRoleID}`)){
+
+		}else{message.reply(nopermreply);return;}
+	}
+		fs.writeFileSync('./allow-incoming.config', 'allow')
+		client.user.setStatus("online");
+		message.channel.send('Mod Mail is now enabled.')
+		
+	}})
+
 //Login
 client.login(token);;

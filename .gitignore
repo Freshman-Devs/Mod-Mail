@@ -4,3 +4,4 @@ config.json
 runstate.txt
 info.json
 strings.json
+allow-incoming.config
