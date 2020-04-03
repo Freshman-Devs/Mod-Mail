@@ -6,7 +6,7 @@ const {BotLog, MessageLog, RequirePermissonsToUseDmCommand, StaffRoleID} = requi
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const { MessageEmbed } = require('discord.js')
-global.version = '2.0.0'
+global.version = '3.0.0'
 
 
 //Bootup check
