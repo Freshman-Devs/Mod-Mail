@@ -6,6 +6,7 @@ const {BotLog, MessageLog, RequirePermissonsToUseDmCommand, StaffRoleID} = requi
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const { MessageEmbed } = require('discord.js')
+global.version = '2.0.0'
 
 
 //Bootup check
@@ -27,7 +28,7 @@ client.once('ready', () => {
 					{ name: 'Current date/time: ', value: dateTime, inline: true },
 				)
 				.setTimestamp()
-				.setFooter('Mod Mail')
+				.setFooter('Mod Mail | Version '+version)
 				global.modlog = client.channels.cache.get(`${BotLog}`);
 				modlog.send(StartupEmbed);
 				return;
