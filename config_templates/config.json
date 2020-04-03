@@ -1,4 +1,6 @@
 {
 	"DMcommand": "",
+	"DisableIncomingMailCommand":"",
+	"EnableIncomingMailCommand":"",
 	"token": ""
 }
