@@ -5,3 +5,4 @@ runstate.txt
 info.json
 strings.json
 allow-incoming.config
+blacklist.txt

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { DMcommand, token, EnableIncomingMailCommand, DisableIncomingMailCommand} = require('./config.json');
+const { DMcommand, token, EnableIncomingMailCommand, DisableIncomingMailCommand, BlacklistCommand} = require('./config.json');
 const { nopermreply, BootSuccessful, DmRespondMessage} = require('./strings.json');
 const {BotLog, MessageLog, RequirePermissonsToUseDmCommand, StaffRoleID} = require('./info.json');
 const client = new Discord.Client();
@@ -12,8 +12,9 @@ global.version = '3.0.0'
 //Bootup check
 client.once('ready', () => {
 	console.log('Ready!');
+	console.log('Version: '+version)
 	fs.readFile('./allow-incoming.config', function(err, data){
-		console.log(err)
+		if(err)console.log(err)
 		if (data == 'reject'){client.user.setStatus("dnd");const status = 'Mod Mail | Incoming disabled'}else{const status = 'Mod Mail | Incoming enabled'}
 	})
 		  var today = new Date();
@@ -51,6 +52,21 @@ client.on('message', message => {
 	if (message.content.startsWith(DMcommand)) return;
 	const messagecontent = message.content;
 	const channel = client.channels.cache.get(MessageLog);
+	fs.readFile('./blacklist.txt', function(err, data){
+		if(data.includes (message.author.id)){
+		const MessageIncomingRejectedBlacklisted = new Discord.MessageEmbed()
+			.setColor('ff0000')
+			.setTitle('Message Rejected')
+			.setDescription(`Sorry <@${message.author.id}>, you have been blacklisted of using <@${client.user.id}>. Please try again later or contact server staff.`)
+			.addFields(
+				{ name: 'Message ',
+				value: message.content,
+				inline: false },
+				)
+				.setTimestamp()
+				.setFooter('Mod Mail')
+			message.channel.send(MessageIncomingRejectedBlacklisted);return;
+	}})
 	fs.readFile('./allow-incoming.config', function(err, data){
 		console.log(err)
 	
@@ -179,6 +195,21 @@ client.on('message', message => {
 		fs.writeFileSync('./allow-incoming.config', 'allow')
 		client.user.setStatus("online");
 		message.channel.send('Mod Mail is now enabled.')
+		
+	}})
+
+//Add to blacklist
+client.on('message', message => {
+	if (message.content.startsWith(`${BlacklistCommand}`)){
+		if (message.author.bot)return;
+		if (message.channel.type == 'dm')return;
+		if(RequirePermissonsToUseDmCommand == true){
+		if (message.member.roles.cache.some(role => role.id === `${StaffRoleID}`)){
+
+		}else{message.reply(nopermreply);return;}
+	}
+		fs.appendFile('./blacklist.txt', `${message.mentions.members.first().id}\n`, function(err,){})
+		message.channel.send(`<@${message.mentions.members.first().id}> (${message.mentions.members.first().id}) was blacklisted of using <@${client.user.id}>. `)
 		
 	}})
 

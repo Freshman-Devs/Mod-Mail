@@ -1,6 +1,7 @@
 {
-	"DMcommand": "",
-	"DisableIncomingMailCommand":"",
-	"EnableIncomingMailCommand":"",
+	"DMcommand": "!dm",
+	"DisableIncomingMailCommand":"!disableincoming",
+	"EnableIncomingMailCommand":"!enableincoming",
+	"BlacklistCommand":"!blacklist",
 	"token": ""
 }
