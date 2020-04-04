@@ -1,7 +1,7 @@
 # Mod-Mail
 A moderation mail bot
 
-Version: 2.0
+Version: 3.0.0
 
 ![Mod-Mail Logo](https://github.com/TechGeekGamer/Mod-Mail/blob/master/img/image0.png)(Logo by `alex.#2222`)
 
