@@ -1,9 +1,10 @@
 {
 	"prefix":"!",
 	"DMcommand": "dm",
-	"DisableIncomingMailCommand":"disableincoming",
-	"EnableIncomingMailCommand":"enableincoming",
+	"DisableIncomingMailCommand":"disable",
+	"EnableIncomingMailCommand":"enable",
 	"BlacklistCommand":"blacklist",
 	"WhitelistCommand":"whitelist",
+	"SetStatusCommand":"setstatus",
 	"token": ""
 }
