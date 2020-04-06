@@ -1,0 +1,2 @@
+This version includes bug fixes for 3.1.0.
+You can look at 3.0.0's changes [here](https://github.com/TechGeekGamer/Mod-Mail/releases/tag/3.0)
