@@ -1,5 +1,5 @@
 console.log('Processing. Please wait a moment.')
-global.version = '4.0.0'
+global.version = '4.0.1'
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -124,7 +124,7 @@ client.once('ready', () => {
 				const changelog = data.toString()
 				fs.readFile('./version.txt', function(err, data){
 					const latestversion = data.toString().replace(/[\r\n]+/g, '');
-				 	if(version != latestversion && !version.includes('DEBUG')){
+				 	if(version != latestversion){
 					const UpdateAvailableEmbed = new Discord.MessageEmbed()
 					.setTitle('Update Available')
 					.setColor('ffa500')
@@ -133,15 +133,7 @@ client.once('ready', () => {
 					.setTimestamp()
 					.setFooter('Mod Mail | Version '+version)
 					modlog.send(UpdateAvailableEmbed);
-					}else{
-							const DebugModeEmbed = new Discord.MessageEmbed()
-								.setTitle('Debug Mode')
-								.setColor('ffa500')
-								.setDescription(`You are currently running a debug build.\nLatest release version: ${latestversion}\nYour build version: ${version.replace('DEBUG','')}`)
-								.setTimestamp()
-								.setFooter('Mod Mail | Version '+version)
-							modlog.send(DebugModeEmbed);
-						}
+					}
 							try {
 								fs.unlinkSync(`./version.txt`)
 								fs.unlinkSync(`./changelog.txt`)
