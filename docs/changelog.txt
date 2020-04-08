@@ -1,2 +1,17 @@
-This version includes bug fixes for 3.1.0.
-You can look at 3.0.0's changes [here](https://github.com/TechGeekGamer/Mod-Mail/releases/tag/3.0)
+This version includes new features and important changes.
+
+**IMPORTANT**
+The configs have changed. Please get the latest copies from `/config_templates/`, replace your current configs with the new ones, and fill out the data again.
+
+
+**New features**
+- Checks for updates when booting updates. Whenever you boot up the bot, it checks for updates and lets you know if there is an update. You can also check for updates with `<prefix>updates`.
+
+- If the required files don't exist, it creates it.
+
+- Version number is now shown.
+
+**Bug Fixes**
+- Fixed permissions check.
+
+- General stability improvements to enhance the user's experience.

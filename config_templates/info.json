@@ -1,6 +1,6 @@
 {
 	"BotLog": "",
 	"MessageLog": "",
-	"RequirePermissonsToUseDmCommand": true,
+	"RequirePermissons": true,
 	"StaffRoleID":""
 }
