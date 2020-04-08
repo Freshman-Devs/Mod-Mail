@@ -1,5 +1,5 @@
 console.log('Processing. Please wait a moment.')
-global.version = '4.0.1'
+global.version = '5.0.0'
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
