@@ -1,1 +1,1 @@
-Removed leftover debug feature. Check 4.0's update changelog [here](https://github.com/TechGeekGamer/Mod-Mail/releases/tag/4.0).
+Removed leftover debug feature. Check 4.0's update changelog here (https://github.com/TechGeekGamer/Mod-Mail/releases/tag/4.0).
