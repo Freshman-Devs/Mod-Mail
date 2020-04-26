@@ -1,10 +1,21 @@
 {
 	"Prefix":"!",
+	"Token": "",
+
 	"DMCommand": "dm",
 	"DisableIncomingMailCommand":"disable",
 	"EnableIncomingMailCommand":"enable",
 	"BlacklistCommand":"blacklist",
 	"WhitelistCommand":"whitelist",
 	"SetStatusCommand":"setstatus",
-	"Token": ""
+	"highTrafficCommand":"delay",
+
+	"BotLog": "",
+	"MessageLog": "",
+	"RequirePermissons": true,
+	"StaffRoleID":"",
+
+	"NoPermReply": "you don't seem to have the correct permissions to use this command. Please try again later. If you believe this is an error related to the bot, contact the bot owner.",
+	"BootSuccessful": "Bot has started successfully.",
+	"DMRespondMessage": "Please keep your DMs open for a response!"
 }
