@@ -429,7 +429,7 @@ client.on('message', message => {
 	helpmenu.push(`${Prefix}${BlacklistCommand} @user`)
 	helpmenu.push(`${Prefix}${WhitelistCommand} @user`)
 	helpmenu.push(`${Prefix}${SetStatusCommand} <text>`)
-	helpmenu.push(`${Prefix}${highTrafficCommand} @user`)
+	helpmenu.push(`${Prefix}${highTrafficCommand} @user <reason>`)
 	helpmenu.join('\n')
 
 	helpmenuright.push('Replys to a user.')
