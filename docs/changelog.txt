@@ -1,16 +1,16 @@
 This update includes new features, bug fixes, and config changes.
 
-** New features **
+**New features**
 - There is now a help menu which can be activated by doing `<prefix>help`. (Please note this is a hard-coded command.)
 - You can now reply to a user saying that there may be a delay in response.
 - When responding with a message that is too long to send, it tells you.
 
-** Bug fixes **
-- Fixed a bug where the bot would crash.
+**Bug fixes**
+- Fixed a bug where the bot would crash on error instead of staying online.
 - Fixed an issue when bot would not show that the reply message failed to send.
 - Fixed typo in command that sets the bot's activity.
 
-** Code breaking changes **
+**Code breaking changes**
 - `info.json` and `strings.json` have been merged with `config.json`. 
 - New commands mean you have to add those to your `config.json`.
 
