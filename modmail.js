@@ -1,32 +1,34 @@
-console.log('Processing. Please wait a moment.')
+console.log('Loading. Please wait a moment.')
 global.version = '5.0.0'
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const fs = require('fs');
-const {MessageEmbed} = require('discord.js')
+const {
+	MessageEmbed
+} = require('discord.js')
 
 const {	Prefix, 
-		DMCommand, 
 		Token,
+
+		DMCommand, 
 		EnableIncomingMailCommand,
 		DisableIncomingMailCommand,
 		BlacklistCommand,
 		WhitelistCommand,
 		SetStatusCommand,
-	} = require('./config.json');
+		highTrafficCommand,
 
-const { BotLog, 
+		BotLog, 
 		MessageLog, 
 		RequirePermissons, 
 		StaffRoleID,
-	} = require('./info.json');
 
-const { NoPermReply, 
+		NoPermReply, 
 		BootSuccessful, 
-		DMRespondMessage
-	} = require('./strings.json');
+		DMRespondMessage,
+	} = require('./config.json');
 
 //Makes required files if not found
 client.on('ready', () => {
@@ -38,59 +40,8 @@ if (!fs.existsSync('./allow-incoming.config')) {
 	}
 })
 
-//Checks for updates every ~24 hours
-
-function refreshData()
-{
-    x = 10;  // Seconds
-
-    client.emit('CheckForNewDay')
-
-    setTimeout(refreshData, x*1000);
-}
-
-
-refreshData(); // execute function
-
-client.on('CheckForNewDay', () => {
-	return //fixing later
-		 today = new Date();
-		 https = require('https');
-		 hour = today.getHours()
-		 minute = today.getMinutes()
-		 second = today.getSeconds();
-		 time = `${hour} ${minute}`
-		if(hour > 23 && minute > 55)
-		 file = fs.createWriteStream("version.txt"); 
-		 request = https.get("https://techgeekgamer.github.io/Mod-Mail/latestversion.txt")
-		 changedfile = fs.createWriteStream("changelog.txt"); 
-		 changedrequest = https.get("https://techgeekgamer.github.io/Mod-Mail/changelog.txt")
-		changedresponse.pipe(changedfile);
-		fs.readFile('./changelog.txt', function(err, data){
-		 changelog = data.toString()
-		fs.readFile('./version.txt', function(err, data){
-			 latestversion = data.toString().replace(/[\r\n]+/g, '');
-			if(version == latestversion)return;
-			 UpdateAvailableEmbed = new Discord.MessageEmbed()
-			.setTitle('Update Available')
-			.setColor('ffa500')
-			.setDescription(`An update is available.\nLatest version: ${latestversion}\nYour version: ${version}`)
-			.addField('Changelog',changelog,false)
-			.setTimestamp()
-			.setFooter('Mod Mail | Version '+version)
-		modlog.send(UpdateAvailableEmbed);
-						try {
-							fs.unlinkSync(`./version.txt`)
-							fs.unlinkSync(`./changelog.txt`)
-				  			} catch(err) {
-								console.error(err)
-				  }})})
-				})
-
-
 //Bootup check
 client.once('ready', () => {
-	client.emit('CheckForNewDay')
 	console.log('Ready!');
 	console.log('Version: '+version)
 	fs.readFile('./allow-incoming.config', function(err, data){
@@ -101,89 +52,90 @@ client.once('ready', () => {
 	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	global.dateTime = date+' '+time;
-		const StartupEmbed = new Discord.MessageEmbed()
-			.setColor('#00FF00')
-			.setTitle('Bot Started')
-			.setDescription(`${BootSuccessful}`)
-			.addFields(
-				{ name: 'Current date/time: ', value: dateTime, inline: true },
-					)
-			.setTimestamp()
-			.setFooter('Mod Mail | Version '+version)
+	const StartupEmbed = new Discord.MessageEmbed()
+		.setColor('#00FF00')
+		.setTitle('Bot Started')
+		.setDescription(`${BootSuccessful}`)
+		.addFields(
+			{ name: 'Current date/time: ', value: dateTime, inline: true },
+				)
+		.setTimestamp()
+		.setFooter('Mod Mail | Version '+version)
 		global.modlog = client.channels.cache.get(`${BotLog}`);
 		modlog.send(StartupEmbed);
 				//Check for updates
 				const https = require('https');
 				const file = fs.createWriteStream("version.txt"); 
 				const request = https.get("https://techgeekgamer.github.io/Mod-Mail/latestversion.txt", function(response) {
-				response.pipe(file);
-				const changedfile = fs.createWriteStream("changelog.txt"); 
-				const changedrequest = https.get("https://techgeekgamer.github.io/Mod-Mail/changelog.txt", function(changedresponse) {
-				changedresponse.pipe(changedfile);
-				fs.readFile('./changelog.txt', function(err, data){
-				const changelog = data.toString()
-				fs.readFile('./version.txt', function(err, data){
-					const latestversion = data.toString().replace(/[\r\n]+/g, '');
-				 	if(version != latestversion){
-					const UpdateAvailableEmbed = new Discord.MessageEmbed()
-					.setTitle('Update Available')
-					.setColor('ffa500')
-					.setDescription(`An update is available.\nLatest version: ${latestversion}\nYour version: ${version}`)
-					.addField('Changelog',changelog,false)
-					.setTimestamp()
-					.setFooter('Mod Mail | Version '+version)
-					modlog.send(UpdateAvailableEmbed);
-					}
-							try {
-								fs.unlinkSync(`./version.txt`)
-								fs.unlinkSync(`./changelog.txt`)
-					  			} catch(err) {
-								console.error(err)
-					  }
-				})})})})
-									 
+					response.pipe(file);
+					const changedfile = fs.createWriteStream("changelog.txt"); 
+					const changedrequest = https.get("https://techgeekgamer.github.io/Mod-Mail/changelog.txt", function(changedresponse) {
+						changedresponse.pipe(changedfile);
+						fs.readFile('./changelog.txt', function(err, data){
+							const changelog = data.toString()
+							fs.readFile('./version.txt', function(err, data){
+								const latestversion = data.toString().replace(/[\r\n]+/g, '');
+						 			if(version != latestversion){
+									const UpdateAvailableEmbed = new Discord.MessageEmbed()
+									.setTitle('Update Available')
+									.setColor('ffa500')
+									.setDescription(`An update is available.\nLatest version: ${latestversion}\nYour version: ${version}`)
+									.addField('Changelog',changelog,false)
+									.setTimestamp()
+									.setFooter('Mod Mail | Version '+version)
+									modlog.send(UpdateAvailableEmbed);
+									}
+									try {
+										fs.unlinkSync(`./version.txt`)
+										fs.unlinkSync(`./changelog.txt`)
+								  	} catch(err) {
+										  console.error(err)
+									  }
+				})
+			})
+		})
+	})								 
 });
+
 
 process.on('unhandledRejection', error => console.error('Uncaught Promise Rejection', error));
 
 //Error
 client.on('error', error => {
 	console.error('an error has occured', error);
-
 });
-
 
 //Check for direct messages
 client.on('message', message => {
 	try{
 	if (message.author.bot) return;
 	if (message.channel.type == "dm") {
-	if (message.content.startsWith(DMCommand)) return;
-	const messagecontent = message.content;
-	const channel = client.channels.cache.get(MessageLog);
-	if (message.content == ''){
-		message.channel.send('Error: Message content can\'t be empty.');
-		message.channel.send('<@'+message.author.id+'>, you must include some text in your message to send it.');
-		return
+		if (message.content.startsWith(DMCommand)) return;
+		const messagecontent = message.content;
+		const channel = client.channels.cache.get(MessageLog);
+		if (message.content == ''){
+			message.channel.send('Error: Message content can\'t be empty.');
+			message.channel.send('<@'+message.author.id+'>, you must include some text in your message to send it.');
+			return
 	}
 	
 	//Checks if on blacklist
 	fs.readFile('./blacklist.txt', function(err, data){
 		const blacklistdata = data
 		if(data && data.toString().includes(message.author.id)){
-		const MessageIncomingRejectedBlacklisted = new Discord.MessageEmbed()
-			.setColor('ff0000')
-			.setTitle('Message Rejected')
-			.setDescription(`Sorry <@${message.author.id}>, you have been blacklisted of using <@${client.user.id}>. Please try again later or contact server staff.`)
-			.addFields(
-				{ name: 'Message ',
-				value: message.content,
-				inline: false },
-				)
+			const MessageIncomingRejectedBlacklisted = new Discord.MessageEmbed()
+				.setColor('ff0000')
+				.setTitle('Message Rejected')
+				.setDescription(`Sorry <@${message.author.id}>, you have been blacklisted of using <@${client.user.id}>. Please try again later or contact server staff.`)
+				.addFields(
+					{ name: 'Message ',
+					value: message.content,
+					inline: false },
+					)
 				.setTimestamp()
 				.setFooter('Mod Mail | Version '+version)
-		message.channel.send(MessageIncomingRejectedBlacklisted);
-		return;
+			message.channel.send(MessageIncomingRejectedBlacklisted);
+			return;
 		}
 	//Checks if Mod Mail is enabled.
 	fs.readFile('./allow-incoming.config', function(err, data){
@@ -250,7 +202,8 @@ client.on('message', message => {
 				.setDescription(`A message was received.`)
 				.addFields(
 					{ name: 'Current date/time ', value: dateTime, inline: false },
-					{ name: 'Sender', value: message.author.tag, inline: false },
+					{ name: 'Sender', value: `<@${message.author.id}>`, inline: false },
+					{ name: 'Sender Tag', value: message.author.tag, inline: false },
 					{ name: 'Sender ID', value: message.author.id, inline: false },
 					{ name: 'Message ', value: messagecontent, inline: false },
 				)
@@ -285,7 +238,7 @@ client.on('message', message => {
 		}else{message.reply(NoPermReply);return;}
 	}
 	console.log('Not DMs')
-	try{
+		
 	console.log('Command detected')
 	const args = message.content.slice((Prefix+DMCommand).length).split(/ +/);
 	console.log(args)
@@ -293,6 +246,13 @@ client.on('message', message => {
 	const mentionedmemnber = message.mentions.members.first()
 		const newargs = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg));
 		const reply = newargs.join (' ')
+		if(reply.length > '1024'){
+			message.channel.send('Error: MessageEmbed field can\'t exceed 1024 characters.');
+			message.channel.send('<@'+message.author.id+'>, your message can\'t exceed 1024 characters. Please shorten your message.');
+			return
+		}else{
+			
+		}
 		const ReplyReceived = new Discord.MessageEmbed()
 			.setTitle('Reply Received')
 			.setDescription(`You have received a reply.`)
@@ -304,11 +264,13 @@ client.on('message', message => {
 				.setTimestamp()
 				.setFooter('Mod Mail | Version '+version)
 				try{
-					mentionedmemnber.send(ReplyReceived);
-					console.log('Attempted to send.')}catch(err){console.log(err)}
-					message.channel.send('Direct message reply was sent to `'+mentionedmemnber.user.tag+'`.')
-				}catch(err){message.channel.send('Something went wrong and I was unable to direct message `'+mentionedmemnber.user.tag+'`. Please try again.');return;}
-}})
+					mentionedmemnber.send(ReplyReceived).catch(err => {message.channel.send('Something went wrong and I was unable to direct message `'+mentionedmemnber.user.tag+'`. Please try again.');return})
+					message.channel.send('Direct message was sent to `'+mentionedmemnber.user.tag+'`.\nMessage: '+reply)
+				}catch(err){
+					message.channel.send('Something went wrong and I was unable to direct message `'+mentionedmemnber.user.tag+'`. Please try again.');return;
+			}
+	}
+})
 
 //Disable Incoming
 client.on('message', message => {
@@ -324,7 +286,7 @@ client.on('message', message => {
 		client.user.setStatus("dnd");
 		message.channel.send('Mod Mail is now disabled.')
 		
-	}})
+}})
 
 //Allow Incoming
 	client.on('message', message => {
@@ -340,7 +302,7 @@ client.on('message', message => {
 		client.user.setStatus("online");
 		message.channel.send('Mod Mail is now enabled.')
 		
-	}})
+}})
 
 //Add to blacklist
 client.on('message', message => {
@@ -358,7 +320,7 @@ client.on('message', message => {
 		message.channel.send(`<@${message.mentions.members.first().id}> (${message.mentions.members.first().id}) was blacklisted of using <@${client.user.id}>. `)
 		}
 	})
-	}})
+}})
 
 //Remove from blacklist
 client.on('message', message => {
@@ -376,7 +338,7 @@ client.on('message', message => {
 		var newValue = data.replace((valuetoremove), '');
 		fs.writeFileSync('./blacklist.txt', newValue, 'utf-8');
 	})}
-	})
+})
 
 //Sets bot status
 client.on('message', message => {
@@ -392,7 +354,7 @@ client.on('message', message => {
 	message.channel.send('Bot activity set to `WATCHING '+activity+'`.')
 })
 
-//Test fetch test
+//Check for updates - command
 client.on('message', message => {
 	if (message.author.bot)return;
 	if (!message.content.startsWith(`${Prefix}updates`))return;
@@ -424,31 +386,66 @@ client.on('message', message => {
 })
 })
 
-//Client Emit Actions
+//Command: Reply that there might be a delay
+client.on('message', message => {
+	if (message.content.startsWith(`${Prefix}${highTrafficCommand}`)){
+const args = message.content.slice((Prefix+DMCommand).length).split(/ +/);
+	console.log(args)
+	args.join(' ')
+	const mentionedmemnber = message.mentions.members.first()
+		const newargs = args.filter(arg => !Discord.MessageMentions.USERS_PATTERN.test(arg));
+		const reply = newargs.join (' ')
+		const BusyMommentEmbed = new Discord.MessageEmbed()
+			BusyMommentEmbed.setTitle('Notice from server')
+			BusyMommentEmbed.setColor('ffff00')
+			if(reply == ''){
+				BusyMommentEmbed.setDescription(`Hello <@${mentionedmemnber.id}>, please be aware that you may have a delay in response.\n\nReason: No reason provided.`)
+			}else{
+				BusyMommentEmbed.setDescription(`Hello <@${mentionedmemnber.id}>, please be aware that you may have a delay in response.\n\nReason: ${reply}`)
+			}
+			BusyMommentEmbed.setTimestamp()
+			BusyMommentEmbed.setFooter('Mod Mail | Version '+version)
+				try{
+					mentionedmemnber.send(BusyMommentEmbed);
+					console.log('Attempted to send.')}catch(err){console.log(err)}
+					message.channel.send('Busy reply sent to `'+mentionedmemnber.user.tag+'`.')
+		}
+})
 
-//Bootup complete
-client.on('Bootup', () => {
-	var today = new Date();
-	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
-	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-	global.dateTime = date+' '+time;
-	const StartupEmbed = new Discord.MessageEmbed()
-		.setColor('#00FF00')
-		.setTitle('Bot Started')
-		.setDescription(`${BootSuccessful}`)
-		.addFields(
-			{ name: 'Current date/time: ', value: dateTime, inline: true },
-				)
-		.setTimestamp()
-		.setFooter('Mod Mail | Version '+version)
-	global.botlogchannel = client.channels.cache.get(`${BotLog}`);
-	botlogchannel.send(StartupEmbed);
+//Help command (<prefix>help)
+client.on('message', message => {
+	if (message.author.bot)return;
+	if (!message.content.startsWith(`${Prefix}help`))return;
+	if (message.channel.type == 'dm')return;
+	if(RequirePermissons == true){
+	if (message.member.roles.cache.some(role => role.id === `${StaffRoleID}`)){}else{message.reply(NoPermReply);return;}}
+	var helpmenu = []
+	var helpmenuright = []
+	var helpembed = new MessageEmbed()
+	helpembed.setTitle(client.user.username + ' HELP MENU')
+	helpmenu.push(`${Prefix}${DMCommand} @user`)
+	helpmenu.push(`${Prefix}${DisableIncomingMailCommand}`)
+	helpmenu.push(`${Prefix}${EnableIncomingMailCommand}`)
+	helpmenu.push(`${Prefix}${BlacklistCommand} @user`)
+	helpmenu.push(`${Prefix}${WhitelistCommand} @user`)
+	helpmenu.push(`${Prefix}${SetStatusCommand} <text>`)
+	helpmenu.push(`${Prefix}${highTrafficCommand} @user`)
+	helpmenu.join('\n')
+
+	helpmenuright.push('Replys to a user.')
+	helpmenuright.push('Disables incoming DMs.')
+	helpmenuright.push('Enable incoming DMs.')
+	helpmenuright.push('Blocks the mentioned user from DMing.')
+	helpmenuright.push('Allows the mentioned user to DM.')
+	helpmenuright.push('Sets the bot\'s status.')
+	helpmenuright.push('Lets a user know there may be a delay.')
+	helpmenuright.join('\n')
+
+	helpembed.addField('Commands', helpmenu,true)
+	helpembed.addField('Info', helpmenuright,true)
+	message.channel.send(helpembed)
 })
 
 
-
-
-
-
 //Login
-client.login(Token);
+client.login(Token)
