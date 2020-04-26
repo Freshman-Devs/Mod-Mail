@@ -389,7 +389,7 @@ client.on('message', message => {
 //Command: Reply that there might be a delay
 client.on('message', message => {
 	if (message.content.startsWith(`${Prefix}${highTrafficCommand}`)){
-const args = message.content.slice((Prefix+DMCommand).length).split(/ +/);
+const args = message.content.slice((Prefix+highTrafficCommand).length).split(/ +/);
 	console.log(args)
 	args.join(' ')
 	const mentionedmemnber = message.mentions.members.first()
