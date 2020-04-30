@@ -1,9 +1,7 @@
 # Mod-Mail
 A moderation mail bot
 
-Version: 3.0.0
-
-![Mod-Mail Logo](https://github.com/TechGeekGamer/Mod-Mail/blob/master/img/image0.png)(Logo by `alex.#2222`)
+![Mod-Mail Logo](https://github.com/TechGeekGamer/Mod-Mail/blob/master/img/image1.png)(Logo by `Daniel 💻#7205`)
 
 ## Setup
 1. Download the source of the bot and extract to a folder.
