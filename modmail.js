@@ -1,5 +1,5 @@
 console.log('Loading. Please wait a moment.')
-global.version = '5.0.0'
+global.version = '5.1.0'
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -48,6 +48,11 @@ client.once('ready', () => {
 		if(err)console.log(err)
 		if (data == 'reject'){client.user.setStatus("dnd");const status = 'Mod Mail | Incoming disabled'}else{const status = 'Mod Mail | Incoming enabled'}
 	})
+	if(fs.existsSync('./statusmessage.config')){
+		fs.readFile('./statusmessage.config', function(err, data){
+		client.user.setActivity(data.toString(), { type: 'WATCHING' });
+		})
+	}
 	var today = new Date();
 	var date = today.getMonth()+1+'-'+(today.getDate())+'-'+today.getFullYear();
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -346,7 +351,7 @@ client.on('message', message => {
 	const activity = args.join(' ')
 	client.user.setActivity(activity, { type: 'WATCHING' });
 	fs.writeFileSync('./statusmessage.config', activity, 'utf-8');
-	message.channel.send('Bot activity set to `WATCHING '+activity+'`.')
+	message.channel.send('Bot activity set to `WATCHING'+activity+'`.')
 })
 
 //Check for updates - command
