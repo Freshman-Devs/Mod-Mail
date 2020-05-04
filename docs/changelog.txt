@@ -1,17 +1,11 @@
-This update includes new features, bug fixes, and config changes.
-
-**New features**
-- There is now a help menu which can be activated by doing `<prefix>help`. (Please note this is a hard-coded command.)
-- You can now reply to a user saying that there may be a delay in response.
-- When responding with a message that is too long to send, it tells you.
+This update includes bug fixes.
 
 **Bug fixes**
-- Fixed a bug where the bot would crash on error instead of staying online.
-- Fixed an issue when bot would not show that the reply message failed to send.
-- Fixed typo in command that sets the bot's activity.
+- Fixed double space in set status command.
+- Bot restores saved status message when booting.
 
-**Code breaking changes**
-- `info.json` and `strings.json` have been merged with `config.json`. 
-- New commands mean you have to add those to your `config.json`.
+**Notice**
+- I am no longer adding feature updates to this bot. I am working on a new bot that will have more features and be easier to use. If there is an issue with this bot, please open an Issue on GitHub.
 
-You can get the release [here](https://github.com/TechGeekGamer/Mod-Mail/releases/tag/5.0).
+
+You can get the release [here](https://github.com/TechGeekGamer/Mod-Mail/releases/tag/5.1).
