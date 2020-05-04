@@ -56,9 +56,6 @@ client.once('ready', () => {
 		.setColor('#00FF00')
 		.setTitle('Bot Started')
 		.setDescription(`${BootSuccessful}`)
-		.addFields(
-			{ name: 'Current date/time: ', value: dateTime, inline: true },
-				)
 		.setTimestamp()
 		.setFooter('Mod Mail | Version '+version)
 		global.modlog = client.channels.cache.get(`${BotLog}`);
@@ -187,9 +184,7 @@ client.on('message', message => {
 			.setTitle('Message Sent')
 			.setDescription('Your message was sent to the "'+ channel.guild.name+ '" server. '+DMRespondMessage)
 			.addFields(
-				{ name: 'Current date/time ',
-				value: dateTime,
-				inline: false },
+				
 				{ name: 'Message ',
 				value: messagecontent,inline: false },
 				)
@@ -201,7 +196,7 @@ client.on('message', message => {
 				.setTitle('Message Received')
 				.setDescription(`A message was received.`)
 				.addFields(
-					{ name: 'Current date/time ', value: dateTime, inline: false },
+					
 					{ name: 'Sender', value: `<@${message.author.id}>`, inline: false },
 					{ name: 'Sender Tag', value: message.author.tag, inline: false },
 					{ name: 'Sender ID', value: message.author.id, inline: false },
@@ -407,7 +402,7 @@ const args = message.content.slice((Prefix+highTrafficCommand).length).split(/ +
 			BusyMommentEmbed.setFooter('Mod Mail | Version '+version)
 				try{
 					mentionedmemnber.send(BusyMommentEmbed);
-					console.log('Attempted to send.')}catch(err){console.log(err)}
+					console.log('Attempted to send.')}catch(err){console.log(err);message.channel.send('Something went wrong.')}
 					message.channel.send('Busy reply sent to `'+mentionedmemnber.user.tag+'`.')
 		}
 })
